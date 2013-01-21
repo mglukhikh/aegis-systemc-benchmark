@@ -17,20 +17,18 @@ none = 3 // no car
 
 SC_MODULE( crossroads )
 {
-    // Event for directions
-    sc_event direction_changed;
 
+    sc_clock clk;
     // Directions of cars from all 4 sides of crossroads
     direction x[4];
     
 
     // Main function for specific direction
     void drive (int id) {
-        while (true) {
+        while (true) {                                // Error : Violation of infinite main loop repetition in four processes
     	    // Generate direction
-    	    x[id] = (direction) (random() % 4);       // Data race error with lines 54, 65 and 35
-    	    direction_changed.notify(0, SC_NS);
-    	    wait(0, SC_NS);
+    	    x[id] = (direction) (random() % 4);       // Error : Data race in four processes
+    	    wait();
 
     	    switch(x[id]) {
     	    case forward:
@@ -52,7 +50,7 @@ SC_MODULE( crossroads )
 
 	// waiting for none right car
 	while (x[right_index] != none) {
-	    wait(direction_changed);
+	    wait();
 	}
     }
 
@@ -63,7 +61,7 @@ SC_MODULE( crossroads )
 
 	// waiting for none right car and none forward car
 	while (x[right_index] != none || x[forward_index] != none) {
-	    wait(direction_changed);
+	    wait();
 	}
     }
 
@@ -84,10 +82,10 @@ SC_MODULE( crossroads )
     // Constructor
     SC_CTOR( crossroads )
     {
-        SC_THREAD(north);
-        SC_THREAD(east);
-        SC_THREAD(south);
-        SC_THREAD(west);
+        SC_CTHREAD(north, clk);
+        SC_CTHREAD(east, clk);
+        SC_CTHREAD(south, clk);
+        SC_CTHREAD(west, clk);
     }
 };
 

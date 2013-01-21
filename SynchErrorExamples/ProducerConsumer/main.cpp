@@ -19,7 +19,7 @@ SC_MODULE( my_module )
         wait();      	
 
         while (*s) {
-            c = *s;                 // No data race error
+            c = *s;                 
             s++;
             send.notify();	   	
 	    wait();         

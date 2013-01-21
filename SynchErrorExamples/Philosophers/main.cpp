@@ -31,11 +31,11 @@ SC_MODULE( my_module )
 
     // Philosopher actions
     void philosopher (int id) {
-        while (true) {
-            Thinking();
+        while (true) {                               // Error : Violation of infinite main loop repetition in 10 processes
+            Thinking();                              
 
             // Try to take left fork
-            while (forks[id]) {                      // Data race error with lines 43, 48 and 53
+            while (forks[id]) {                      
                 wait(fork_takeoff);
             }
 
