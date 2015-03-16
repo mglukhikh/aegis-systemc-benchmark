@@ -1,0 +1,1 @@
+This project contains some example designs, which are used for evaluation of Aegis SystemC analysis framework, see www.digiteklabs.ru/en/aegis/platform.
